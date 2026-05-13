@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-white text-slate-800 antialiased;
+}
+
+/* nice, subtle medical dashboard background */
+.app-bg {
+  background:
+    radial-gradient(1200px 600px at 12% 8%, rgba(59, 130, 246, 0.12), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(24, 163, 148, 0.14), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}

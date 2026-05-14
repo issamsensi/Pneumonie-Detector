@@ -95,6 +95,12 @@ function App() {
                     </span>
                     A sigmoid output gives pneumonia probability; ≥ 0.5 maps to PNEUMONIA.
                   </li>
+                  <li className="flex gap-2">
+                    <span className="mt-0.5 h-5 w-5 rounded-full bg-slate-900 text-white grid place-items-center text-xs">
+                      4
+                    </span>
+                    Grad-CAM highlights the image region that contributed most to the pneumonia score.
+                  </li>
                 </ul>
               </div>
 

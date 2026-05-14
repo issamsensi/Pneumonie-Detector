@@ -29,6 +29,11 @@ export default function ResultCard({ result, error }) {
   const isPneumonia = result?.label === 'PNEUMONIA';
   const confidencePct = Math.round((result?.confidence ?? 0) * 100);
   const pneumoniaPct = Math.round((result?.pneumonia_probability ?? 0) * 100);
+  const gradcam = result?.gradcam;
+  const gradcamSrc = gradcam?.overlay_image_base64
+    ? `data:image/png;base64,${gradcam.overlay_image_base64}`
+    : null;
+  const bbox = gradcam?.bbox_normalized;
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-soft p-5">
@@ -65,6 +70,48 @@ export default function ResultCard({ result, error }) {
           This is a prototype AI classifier trained on chest X-ray images. The result is probabilistic and can be wrong.
           Use it only for learning and demonstrations—not for clinical decisions.
         </p>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-sm font-semibold text-slate-900">Grad-CAM localization</div>
+          <Badge label="Experimental" tone="slate" />
+        </div>
+
+        {gradcamSrc ? (
+          <div className="mt-3 grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="rounded-lg border border-slate-200 overflow-hidden bg-white">
+              <img
+                src={gradcamSrc}
+                alt="Grad-CAM heatmap overlay on the uploaded X-ray"
+                className="w-full h-[260px] object-contain bg-white"
+              />
+            </div>
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <div className="text-xs text-slate-500">Most activated area</div>
+              <div className="mt-1 text-sm font-semibold text-slate-900">
+                {gradcam?.location_text || 'Unavailable'}
+              </div>
+
+              {bbox ? (
+                <div className="mt-3 text-xs text-slate-600 space-y-1">
+                  <div>x_min: {bbox.x_min}</div>
+                  <div>y_min: {bbox.y_min}</div>
+                  <div>x_max: {bbox.x_max}</div>
+                  <div>y_max: {bbox.y_max}</div>
+                </div>
+              ) : null}
+
+              <p className="mt-3 text-xs text-slate-500">
+                Heatmap focuses on features that increased the pneumonia score. This is not a pixel-accurate lesion segmentation.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="mt-2 text-sm text-slate-600">
+            Grad-CAM output is not available for this prediction.
+          </p>
+        )}
       </div>
     </div>
   );

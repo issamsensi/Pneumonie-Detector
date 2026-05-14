@@ -144,7 +144,10 @@ export default function UploadBox({
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={onAnalyze}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onAnalyze();
+                  }}
                   disabled={disabled || analyzing}
                   className="flex-1 inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold
                     bg-gradient-to-r from-medical-600 to-brand-600 text-white hover:from-medical-500 hover:to-brand-500
@@ -154,7 +157,10 @@ export default function UploadBox({
                 </button>
                 <button
                   type="button"
-                  onClick={() => onFileChange(null)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFileChange(null);
+                  }}
                   disabled={disabled || analyzing}
                   className="inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold
                     bg-white border border-slate-200 text-slate-700 hover:bg-slate-50

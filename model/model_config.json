@@ -1,0 +1,11 @@
+{
+    "class_indices": {
+        "NORMAL": 0,
+        "PNEUMONIA": 1
+    },
+    "optimal_threshold": 0.25,
+    "img_size": [
+        224,
+        224
+    ]
+}

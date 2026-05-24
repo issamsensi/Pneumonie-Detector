@@ -1,91 +1,94 @@
-# Pneumonia Detector (Full‑Stack Prototype)
+# Pneumonie Detector
 
-Clean, modern **educational/prototype** web app that predicts **NORMAL** vs **PNEUMONIA** from a chest X‑ray image.
+A small Flask web app and inference pipeline to detect pneumonia from chest X-ray images using a PyTorch model.
 
-> **Disclaimer**: This tool is for educational purposes only and must not replace professional medical diagnosis.
+**Status:** Experimental — use for research or demonstration only; not for clinical use.
 
-## Tech stack
+---
 
-- **Frontend**: React + Vite + Tailwind CSS
-- **Backend**: FastAPI (Python)
-- **Model**: TensorFlow/Keras model `pneumonia_model.keras` (sigmoid output)
+**Overview**
 
-## Project structure
+- **Purpose:** Upload a chest X‑ray (JPG/PNG) via the web UI or API and receive a JSON analysis with a verdict, confidence, and regions of interest. A PDF report can be generated for a patient.
+- **Main files:** [app.py](app.py#L1) (Flask app), [utils/inference.py](utils/inference.py#L1) (inference + report generation), and the trained model at `model/pneumonia_best.pt`.
 
-```
-frontend/
-backend/
-  main.py
-  model/
-    pneumonia_model.keras
-    class_indices.json
-```
+**Quick Demo**
 
-## Backend
-
-### Setup
-
-TensorFlow typically supports **Python 3.10–3.12**. If your system Python is newer, create a venv with a supported version.
+1. Activate a Python environment (the repo contains a `pn/` venv you can use):
 
 ```bash
-cd backend
-python -m venv .venv
+# use the included virtualenv if you want
+source pn/bin/activate
+
+# or create a fresh venv
+python3 -m venv .venv
 source .venv/bin/activate
+```
+
+2. Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Run
+3. Run the app (development mode):
 
 ```bash
-cd backend
-source .venv/bin/activate
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+python app.py
+# App listens on http://0.0.0.0:5000
 ```
 
-### Endpoints
+4. Open your browser at http://127.0.0.1:5000 to use the web UI.
 
-- `GET /health` → health check
-- `POST /predict` → multipart upload (`file`) returns:
+---
 
-```json
-{
-  "label": "PNEUMONIA",
-  "confidence": 0.94,
-  "pneumonia_probability": 0.94
-}
-```
+**API / Usage**
 
-## Frontend
+- GET / — web UI ([index.html](templates/index.html#L1))
+- POST /analyze — submit an image file (`multipart/form-data`, field name `image`)
+  - Returns JSON with fields such as `verdict`, `confidence`, `regions`, and `patient_id`.
 
-### Setup
+Example curl (replace image path):
 
 ```bash
-cd frontend
-npm install
+curl -X POST -F "image=@/path/to/xray.jpg" http://127.0.0.1:5000/analyze
 ```
 
-### Run
+- GET /download/report/<patient_id>?verdict=...&confidence=...&regions=... — download a generated PDF report for the given `patient_id`.
 
-```bash
-cd frontend
-npm run dev
-```
+---
 
-Open the local URL shown by Vite (usually `http://localhost:5173`).
+**Model**
 
-### Configure API base URL (optional)
+- The model used for inference is included (or expected) at `model/pneumonia_best.pt`.
+- If you replace the model file, keep the same path or update `MODEL_PATH` in [app.py](app.py#L1).
 
-By default the UI calls `http://localhost:8000`. To override:
+**Inference internals**
 
-```bash
-cd frontend
-echo "VITE_API_BASE_URL=http://localhost:8000" > .env.local
-```
+- Inference and report generation are implemented in `utils/inference.py`. The Flask endpoint calls `analyze_uploaded_image()` and `create_report_pdf()` to run prediction and return results.
+- Input validation: `app.py` enforces a 10 MB upload limit and accepts JPG/JPEG/PNG images.
 
-## Notes on predictions
+---
 
-- The model output is **sigmoid** \(0..1\), interpreted as **pneumonia probability**
-- If probability **≥ 0.5**, the backend maps to **class index 1**
-- `class_indices.json` is expected like:
-  - `{"NORMAL": 0, "PNEUMONIA": 1}`
+**Development & Notes**
 
+- Run the app with debug enabled (as in [app.py](app.py#L1)) for development; disable `debug=True` for production and use a proper WSGI server (Gunicorn/uvicorn behind a reverse proxy).
+- Consider containerizing for reproducible deployments.
+- Tests: none included — add unit tests around `utils/inference.py` for model loading and image preprocessing.
+
+**Security & Privacy**
+
+- This project is a demonstration. DO NOT use it to make clinical decisions. Be sure to follow privacy/regulatory requirements when processing medical images.
+
+---
+
+**Contributing**
+
+- Fork, add tests or improvements, and submit a pull request.
+
+**License**
+
+- No license file is included. Add an appropriate license (e.g., MIT) if you plan to open-source this project.
+
+**Acknowledgements**
+
+- Built as a research/demo project — credit model/data sources as appropriate when publishing results.

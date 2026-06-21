@@ -16,11 +16,11 @@
           <p class="eyebrow">Chest X-ray Analysis</p>
           <h1>Pneumonia detection with medical-grade presentation</h1>
           <p class="subtitle">
-            Upload a chest X-ray to review the model prediction, Grad-CAM overlay, and exportable report.
+            Upload a chest X-ray to review the model prediction, segmentation heatmap overlay, and exportable report.
           </p>
         </div>
         <div class="hero-badge">
-          <span>YOLOv8</span>
+          <span>U-Net</span>
           <strong>CPU inference</strong>
         </div>
       </header>
@@ -56,7 +56,7 @@
 
       <section id="spinner" class="spinner-panel hidden" aria-live="polite">
         <div class="spinner"></div>
-        <p>Analyzing X-ray and generating Grad-CAM overlay...</p>
+        <p>Analyzing X-ray and generating segmentation heatmap...</p>
       </section>
 
       <section id="results-section" class="hidden results-layout">
@@ -79,8 +79,8 @@
               <img id="original-result" alt="Original X-ray result" />
             </figure>
             <figure>
-              <figcaption>Grad-CAM overlay</figcaption>
-              <img id="overlay-result" alt="Grad-CAM overlay result" />
+              <figcaption>Segmentation heatmap</figcaption>
+              <img id="overlay-result" alt="Segmentation heatmap result" />
             </figure>
           </div>
           <div class="metrics-grid">
@@ -96,6 +96,24 @@
               <span>File</span>
               <strong id="filename-value">-</strong>
             </div>
+          </div>
+        </div>
+
+        <div class="card model-perf-card">
+          <div class="section-header">
+            <h2>Model Performance</h2>
+          </div>
+          <figure class="perf-figure">
+            <figcaption>Confusion Matrix (validation set)</figcaption>
+            <img id="confusion-matrix-img" src="{{ url_for('static', filename='images/confusion_matrix.png') }}" alt="Confusion matrix" />
+          </figure>
+          <div class="perf-metrics" id="perf-metrics">
+            <div class="metric"><span>Accuracy</span><strong>0.93</strong></div>
+            <div class="metric"><span>Precision</span><strong>0.93</strong></div>
+            <div class="metric"><span>Recall</span><strong>0.89</strong></div>
+            <div class="metric"><span>F1-score</span><strong>0.91</strong></div>
+            <div class="metric"><span>IoU</span><strong>0.71</strong></div>
+            <div class="metric"><span>AUROC</span><strong>0.98</strong></div>
           </div>
         </div>
 

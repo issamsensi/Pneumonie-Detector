@@ -136,6 +136,7 @@ body::before {
 
 .uploader-card,
 .comparison-card,
+.model-perf-card,
 .report-card,
 .verdict-card,
 .spinner-panel {
@@ -392,6 +393,57 @@ figure img {
 
 #patient-id::placeholder {
   color: #64748b;
+}
+
+.perf-figure {
+  margin: 10px 0 0;
+  background: rgba(2, 6, 23, 0.35);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 18px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.perf-figure figcaption {
+  padding: 14px 16px 0;
+  color: #cbd5e1;
+  font-size: 0.92rem;
+}
+
+.perf-figure img {
+  max-width: 100%;
+  height: auto;
+  max-height: 360px;
+  object-fit: contain;
+  padding: 16px;
+}
+
+.perf-metrics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.perf-metrics .metric {
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.perf-metrics .metric strong {
+  font-size: 1rem;
+}
+
+@media (max-width: 920px) {
+  .perf-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .perf-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 #report-text {

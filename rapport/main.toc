@@ -1,0 +1,104 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Résumé}{2}{chapter*.1}%
+\contentsline {chapter}{Remerciements}{3}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Introduction}{7}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Contexte médical}{7}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Apprentissage profond pour l'imagerie médicale}{8}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Objectifs du projet}{8}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Structure du rapport}{8}{section.1.4}%
+\contentsline {chapter}{\numberline {2}État de l'Art}{10}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Introduction}{10}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Approches par classification}{10}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Approches par détection d'objets}{11}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Approches par segmentation}{11}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Interprétabilité en imagerie médicale}{12}{section.2.5}%
+\contentsline {section}{\numberline {2.6}Positionnement du projet}{12}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Dataset et Prétraitement}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Le dataset RSNA Pneumonia Challenge}{13}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Description}{13}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Dataset prétraité}{13}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Structure des données}{13}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Métadonnées}{14}{subsection.3.1.4}%
+\contentsline {section}{\numberline {3.2}Analyse exploratoire}{14}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Distribution des classes}{14}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Visualisation des données}{15}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Prétraitement des données}{15}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Prétraitement des images}{15}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Prétraitement des masques}{16}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Prétraitement des données tabulaires}{16}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Pipeline de données tf.data}{16}{subsection.3.3.4}%
+\contentsline {subsection}{\numberline {3.3.5}Division du dataset}{16}{subsection.3.3.5}%
+\contentsline {chapter}{\numberline {4}Architectures Explorées}{17}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Introduction}{17}{section.4.1}%
+\contentsline {section}{\numberline {4.2}DenseNet121}{17}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Architecture}{17}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Avantages}{17}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Inconvénients}{17}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}MobileNet}{18}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Architecture}{18}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Avantages}{18}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Inconvénients}{18}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}YOLOv8}{18}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Architecture}{18}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Problèmes rencontrés}{18}{subsection.4.4.2}%
+\contentsline {subsubsection}{Précision insuffisante}{18}{subsection.4.4.2}%
+\contentsline {subsubsection}{Temps d'entraînement long}{19}{subsection.4.4.2}%
+\contentsline {subsubsection}{Confiance pour la classe « normale »}{19}{subsection.4.4.2}%
+\contentsline {subsubsection}{Localisation imprécise}{19}{subsection.4.4.2}%
+\contentsline {subsubsection}{Grad-CAM instable}{19}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}U-Net Résiduelle}{19}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Architecture}{19}{subsection.4.5.1}%
+\contentsline {subsubsection}{Encodeur}{19}{subsection.4.5.1}%
+\contentsline {subsubsection}{Décodeur}{20}{table.caption.6}%
+\contentsline {subsubsection}{Fusion tabulaire}{20}{table.caption.7}%
+\contentsline {subsubsection}{Sorties}{20}{table.caption.7}%
+\contentsline {subsection}{\numberline {4.5.2}Blocs résiduels}{20}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Fonctions de perte}{21}{subsection.4.5.3}%
+\contentsline {subsubsection}{Pour le masque : IoU Loss}{21}{subsection.4.5.3}%
+\contentsline {subsubsection}{Pour la classification : BCE pondérée}{21}{equation.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.4}Perte totale}{21}{subsection.4.5.4}%
+\contentsline {section}{\numberline {4.6}Tableau comparatif}{21}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Méthodologie d'Entraînement}{22}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Environnement d'entraînement}{22}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Hyperparamètres}{22}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Optimiseur Adam}{23}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Regularisation}{23}{section.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Early Stopping}{23}{subsection.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Reduction du taux d'apprentissage}{24}{subsection.5.4.2}%
+\contentsline {subsection}{\numberline {5.4.3}Dropout}{24}{subsection.5.4.3}%
+\contentsline {subsection}{\numberline {5.4.4}Normalisation par lots}{24}{subsection.5.4.4}%
+\contentsline {section}{\numberline {5.5}Déroulement de l'entraînement}{24}{section.5.5}%
+\contentsline {chapter}{\numberline {6}Résultats et Analyse}{25}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Évaluation du modèle}{25}{section.6.1}%
+\contentsline {subsection}{\numberline {6.1.1}Performances de segmentation}{25}{subsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.1.2}Performances de classification}{26}{subsection.6.1.2}%
+\contentsline {subsubsection}{Analyse de la matrice de confusion}{26}{table.caption.13}%
+\contentsline {subsection}{\numberline {6.1.3}Courbe ROC}{27}{subsection.6.1.3}%
+\contentsline {section}{\numberline {6.2}Comparaison des modèles}{27}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Discussion}{27}{section.6.3}%
+\contentsline {subsection}{\numberline {6.3.1}Pourquoi la U-Net surpasse les autres approches}{27}{subsection.6.3.1}%
+\contentsline {subsection}{\numberline {6.3.2}Interprétabilité intrinsèque}{27}{subsection.6.3.2}%
+\contentsline {subsection}{\numberline {6.3.3}Limites du modèle}{28}{subsection.6.3.3}%
+\contentsline {chapter}{\numberline {7}Application Web}{29}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Architecture de l'application}{29}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Stack technique}{29}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Fonctionnement détaillé}{30}{section.7.3}%
+\contentsline {subsection}{\numberline {7.3.1}Flux d'inférence}{30}{subsection.7.3.1}%
+\contentsline {subsection}{\numberline {7.3.2}API REST}{30}{subsection.7.3.2}%
+\contentsline {subsection}{\numberline {7.3.3}Format de réponse}{30}{subsection.7.3.3}%
+\contentsline {section}{\numberline {7.4}Interface utilisateur}{31}{section.7.4}%
+\contentsline {subsection}{\numberline {7.4.1}Design}{31}{subsection.7.4.1}%
+\contentsline {subsection}{\numberline {7.4.2}Fonctionnalités}{31}{subsection.7.4.2}%
+\contentsline {section}{\numberline {7.5}Génération de rapports PDF}{31}{section.7.5}%
+\contentsline {chapter}{\numberline {8}Conclusion et Perspectives}{32}{chapter.8}%
+\contentsline {section}{\numberline {8.1}Résumé des contributions}{32}{section.8.1}%
+\contentsline {section}{\numberline {8.2}Performances atteintes}{32}{section.8.2}%
+\contentsline {section}{\numberline {8.3}Leçons apprises}{33}{section.8.3}%
+\contentsline {section}{\numberline {8.4}Perspectives}{33}{section.8.4}%
+\contentsline {subsection}{\numberline {8.4.1}Améliorations du modèle}{33}{subsection.8.4.1}%
+\contentsline {subsection}{\numberline {8.4.2}Améliorations de l'application}{33}{subsection.8.4.2}%
+\contentsline {subsection}{\numberline {8.4.3}Extensions possibles}{34}{subsection.8.4.3}%
+\contentsline {chapter}{\numberline {A}Code Source}{36}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Architecture du modèle U-Net}{36}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Pipeline d'inférence}{37}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Structure du projet}{38}{section.A.3}%

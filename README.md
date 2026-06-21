@@ -1,25 +1,22 @@
 # Pneumonie Detector
 
-A small Flask web app and inference pipeline to detect pneumonia from chest X-ray images using a PyTorch model.
+A Flask web app that detects pneumonia from chest X-ray images using a **TensorFlow/Keras U-Net** model. The U-Net segmentation mask is overlaid on the original X-ray with bounding boxes and confidence scores — no Grad-CAM needed.
 
-**Status:** Experimental — use for research or demonstration only; not for clinical use.
+**Status:** Experimental — for research/demonstration only; not for clinical use.
 
 ---
 
 **Overview**
 
-- **Purpose:** Upload a chest X‑ray (JPG/PNG) via the web UI or API and receive a JSON analysis with a verdict, confidence, and regions of interest. A PDF report can be generated for a patient.
-- **Main files:** [app.py](app.py#L1) (Flask app), [utils/inference.py](utils/inference.py#L1) (inference + report generation), and the trained model at `model/pneumonia_best.pt`.
+- **Purpose:** Upload a chest X-ray (JPG/PNG) via the web UI or API and receive a JSON analysis with a verdict, confidence, region count, and base64-encoded original + overlay images. A PDF report can be generated for a patient.
+- **Model:** A U-Net trained on chest X-rays (`model/model_unet_full.keras`). Inference wraps the full model with tiled conditional variables so only the image tensor is needed at prediction time.
+- **Visualisation:** The segmentation mask is rendered as a jet heatmap over a blue-background X-ray with bounding boxes and per-region confidence labels.
 
 **Quick Demo**
 
-1. Activate a Python environment (the repo contains a `pn/` venv you can use):
+1. Create and activate a Python virtual environment:
 
 ```bash
-# use the included virtualenv if you want
-source pn/bin/activate
-
-# or create a fresh venv
 python3 -m venv .venv
 source .venv/bin/activate
 ```
@@ -37,58 +34,62 @@ python app.py
 # App listens on http://0.0.0.0:5000
 ```
 
-4. Open your browser at http://127.0.0.1:5000 to use the web UI.
+4. Open http://127.0.0.1:5000 in your browser.
 
 ---
 
-**API / Usage**
+**API**
 
-- GET / — web UI ([index.html](templates/index.html#L1))
-- POST /analyze — submit an image file (`multipart/form-data`, field name `image`)
-  - Returns JSON with fields such as `verdict`, `confidence`, `regions`, and `patient_id`.
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/` | Web UI |
+| POST | `/analyze` | Submit an image (`multipart/form-data`, field `image`) — returns JSON |
+| GET | `/download/report/<patient_id>` | Download PDF report |
 
-Example curl (replace image path):
+**`POST /analyze` response:**
 
-```bash
-curl -X POST -F "image=@/path/to/xray.jpg" http://127.0.0.1:5000/analyze
+```json
+{
+  "verdict": "pneumonia",
+  "confidence": 0.9876,
+  "regions": 3,
+  "original_b64": "data:image/png;base64,...",
+  "overlay_b64": "data:image/png;base64,...",
+  "analysis_date": "2026-06-22 00:05",
+  "report_text": "Analysis Result: PNEUMONIA DETECTED\nRegions detected: 3\nConfidence: 98.8%\nRecommendation: Consult a radiologist for confirmation\nDate: 2026-06-22 00:05"
+}
 ```
 
-- GET /download/report/<patient_id>?verdict=...&confidence=...&regions=... — download a generated PDF report for the given `patient_id`.
+Example curl:
+
+```bash
+curl -X POST -F "image=@xray.jpg" http://127.0.0.1:5000/analyze
+```
+
+**`GET /download/report/<patient_id>`** — query params: `verdict`, `confidence`, `regions`, `date`
 
 ---
-
-**Model**
-
-- The model used for inference is included (or expected) at `model/pneumonia_best.pt`.
-- If you replace the model file, keep the same path or update `MODEL_PATH` in [app.py](app.py#L1).
 
 **Inference internals**
 
-- Inference and report generation are implemented in `utils/inference.py`. The Flask endpoint calls `analyze_uploaded_image()` and `create_report_pdf()` to run prediction and return results.
-- Input validation: `app.py` enforces a 10 MB upload limit and accepts JPG/JPEG/PNG images.
+- `utils/inference.py` handles image preprocessing, model loading, prediction, mask overlay, and PDF generation.
+- The model is a U-Net with an auxiliary classifier branch. Inference strips the conditional variable input so the caller only supplies the image.
+- The overlay pipeline: resize mask → generate jet heatmap → blend with a dimmed blue-background X-ray → draw bounding boxes around connected components with confidence labels.
+- Input validation enforces a 10 MB upload limit and JPG/JPEG/PNG only.
 
 ---
 
-**Development & Notes**
+**Development**
 
-- Run the app with debug enabled (as in [app.py](app.py#L1)) for development; disable `debug=True` for production and use a proper WSGI server (Gunicorn/uvicorn behind a reverse proxy).
-- Consider containerizing for reproducible deployments.
-- Tests: none included — add unit tests around `utils/inference.py` for model loading and image preprocessing.
+- Run with `debug=True` for development; use Gunicorn/uvicorn behind a reverse proxy for production.
+- Tests: not included — consider adding unit tests around `utils/inference.py`.
 
 **Security & Privacy**
 
-- This project is a demonstration. DO NOT use it to make clinical decisions. Be sure to follow privacy/regulatory requirements when processing medical images.
+- This is a demonstration tool. Do not use for clinical decisions. Follow privacy/regulatory requirements when processing medical images.
 
 ---
 
-**Contributing**
-
-- Fork, add tests or improvements, and submit a pull request.
-
 **License**
 
-- No license file is included. Add an appropriate license (e.g., MIT) if you plan to open-source this project.
-
-**Acknowledgements**
-
-- Built as a research/demo project — credit model/data sources as appropriate when publishing results.
+- No license file included. Add an appropriate license (e.g., MIT) if open-sourcing.

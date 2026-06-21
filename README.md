@@ -90,6 +90,3 @@ curl -X POST -F "image=@xray.jpg" http://127.0.0.1:5000/analyze
 
 ---
 
-**License**
-
-- No license file included. Add an appropriate license (e.g., MIT) if open-sourcing.

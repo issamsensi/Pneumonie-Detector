@@ -9,7 +9,7 @@ from flask import Flask, jsonify, render_template, request, send_file
 from utils.inference import analyze_uploaded_image, create_report_pdf
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "model" / "pneumonia_best.pt"
+MODEL_PATH = BASE_DIR / "model" / "model_unet_full.keras"
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024

@@ -1,6 +1,5 @@
 Flask>=3.0.0
-ultralytics>=8.2.0
-torch>=2.2.0
+tensorflow>=2.15.0
 opencv-python>=4.9.0.80
 numpy>=1.26.0
 Pillow>=10.0.0

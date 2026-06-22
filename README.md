@@ -87,6 +87,4 @@ curl -X POST -F "image=@xray.jpg" http://127.0.0.1:5000/analyze
 **Security & Privacy**
 
 - This is a demonstration tool. Do not use for clinical decisions. Follow privacy/regulatory requirements when processing medical images.
-
 ---
-

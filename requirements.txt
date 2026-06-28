@@ -1,4 +1,4 @@
-Flask>=3.0.0
+streamlit>=1.35.0
 tensorflow>=2.15.0
 opencv-python>=4.9.0.80
 numpy>=1.26.0

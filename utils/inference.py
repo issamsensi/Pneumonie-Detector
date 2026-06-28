@@ -17,6 +17,17 @@ IMAGE_SIZE = 224
 MASK_THRESHOLD = 0.5
 DEFAULT_VARS = tf.constant([[0.5, 0.0, 0.0]], dtype=tf.float32)
 
+# Enable memory growth for GPU (no-op on CPU, safe on HF Spaces)
+gpus = tf.config.list_physical_devices("GPU")
+for gpu in gpus:
+    try:
+        tf.config.experimental.set_memory_growth(gpu, True)
+    except RuntimeError:
+        pass
+
+# Required for loading models with Lambda layers in newer TF versions
+tf.keras.config.enable_unsafe_deserialization()
+
 
 def load_model(model_path: Path) -> tf.keras.Model:
     from keras.layers import Lambda
@@ -107,9 +118,12 @@ def make_mask_overlay(
 
 
 def analyze_uploaded_image(uploaded_file, model_path: Path) -> dict[str, Any]:
-    validate_image_file(uploaded_file.filename)
+    # Compatible with Flask (FileStorage) and Streamlit (UploadedFile)
+    filename = getattr(uploaded_file, "filename", None) or getattr(uploaded_file, "name", "image.jpg")
+    validate_image_file(filename)
 
-    pil_image = Image.open(uploaded_file.stream)
+    stream = getattr(uploaded_file, "stream", uploaded_file)
+    pil_image = Image.open(stream)
     pil_image = ImageOps.exif_transpose(pil_image).convert("RGB")
     original_rgb = np.asarray(pil_image)
 

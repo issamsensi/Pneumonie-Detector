@@ -106,6 +106,21 @@ hr { border-color: rgba(148,163,184,0.18); }
 
 
 # ---------------------------------------------------------------------------
+# Model check — show helpful message if missing
+# ---------------------------------------------------------------------------
+
+if not MODEL_PATH.exists():
+    st.error(
+        "**Model file not found.** The trained U-Net model is required.\n\n"
+        f"Expected at: `{MODEL_PATH}`\n\n"
+        "If running on Hugging Face Spaces, upload the model file "
+        "via the **Files** tab of your Space.\n\n"
+        "*The app cannot function until the model is uploaded.*"
+    )
+    st.stop()
+
+
+# ---------------------------------------------------------------------------
 # Model (cached)
 # ---------------------------------------------------------------------------
 

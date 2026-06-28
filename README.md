@@ -13,7 +13,9 @@ A **Streamlit** web app that detects pneumonia from chest X-ray images using a *
 - **Purpose:** Upload a chest X-ray (JPG/PNG) and receive a verdict, confidence score, region count, side-by-side original + heatmap overlay, and an exportable PDF report.
 - **Model:** A U-Net trained on chest X-rays (`model/model_unet_full.keras`). Inference wraps the full model with tiled conditional variables so only the image tensor is needed at prediction time.
 - **Visualisation:** The segmentation mask is rendered as a jet heatmap over a blue-background X-ray with bounding boxes and per-region confidence labels.
-- **Framework:** Migrated from Flask to Streamlit for simplified deployment and Hugging Face Spaces compatibility.
+- **Framework:** Streamlit (deployed on Hugging Face Spaces).
+
+---
 
 **Quick Demo (local)**
 
@@ -25,12 +27,17 @@ streamlit run app.py
 # Opens http://localhost:8501
 ```
 
+---
+
 **Deploy on Hugging Face Spaces**
 
-1. Create a new Space at https://huggingface.co/spaces
-2. Choose **Streamlit** as the SDK
-3. Push this repository (or clone + `git push`)
-4. The Space auto-detects `app.py` as the entry point
+1. Create a new Space at https://huggingface.co/spaces — choose **Streamlit** as the SDK.
+2. Push the code to the Space (or clone and `git push`).
+3. After the code is deployed, go to the **Files** tab of your Space.
+4. Click **Add file** → **Upload file** and upload `model/model_unet_full.keras` (132 MB).
+5. Wait for the Space to rebuild — the app will load the model automatically.
+
+> The model file is excluded from git (`.gitignore`) because of its size. You must upload it manually through the HF Spaces UI.
 
 ---
 
@@ -44,9 +51,8 @@ PneumonieDetector/
 │   ├── __init__.py
 │   └── inference.py        # Model loading, overlay, PDF generation
 ├── static/
-│   ├── css/style.css       # Dark-theme CSS (reused from Flask version)
 │   └── images/confusion_matrix.png
-├── model/                  # Trained model files (gitignored)
+├── model/                  # Trained model file (upload manually on HF Spaces)
 │   └── model_unet_full.keras
 ├── RAPPORT.md              # Project report (French)
 ├── PIPELINE.md             # Pipeline documentation
